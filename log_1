@@ -1,0 +1,228 @@
+import socket, time
+
+
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import *
+
+import tetris
+
+
+def find(raw: str):
+    first = None
+    for num, sign in enumerate(raw):
+        if sign == "<":
+            first = num
+        if sign == ">" and first is not None:
+            second = num
+            result = list(raw[first + 1:second].split(","))
+            return result
+    return ""
+
+
+
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        MainWindow.setObjectName("MainWindow")
+        MainWindow.resize(397, 637)
+        self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.label = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label.setGeometry(QtCore.QRect(140, 20, 141, 41))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_2.setGeometry(QtCore.QRect(170, 200, 131, 41))
+        self.label_2.setObjectName("label_2")
+
+        self.lineEdit = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.lineEdit.setGeometry(QtCore.QRect(70, 240, 281, 31))
+        self.lineEdit.setObjectName("lineEdit")
+
+        self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_3.setGeometry(QtCore.QRect(170, 310, 121, 41))
+        self.label_3.setObjectName("label_3")
+
+        self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.lineEdit_2.setGeometry(QtCore.QRect(70, 350, 291, 31))
+        self.lineEdit_2.setObjectName("lineEdit")
+
+        self.label_4 = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_4.setGeometry(QtCore.QRect(170, 410, 121, 41))
+        self.label_4.setObjectName("label_4")
+
+        self.lineEdit_3 = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.lineEdit_3.setGeometry(QtCore.QRect(70, 450, 291, 31))
+        self.lineEdit_3.setObjectName("lineEdit")
+
+        self.pushButton = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.pushButton.setGeometry(QtCore.QRect(150, 550, 131, 51))
+        self.pushButton.setObjectName("pushButton")
+        self.frame = QtWidgets.QFrame(parent=self.centralwidget)
+        self.frame.setGeometry(QtCore.QRect(-60, -60, 511, 771))
+        self.frame.setStyleSheet("image: url(\"apple.jpg\");")
+        self.frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
+        self.frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
+        self.frame.setObjectName("frame")
+        self.frame.raise_()
+        self.label.raise_()
+        self.label_2.raise_()
+        self.lineEdit.raise_()
+        self.label_3.raise_()
+        self.lineEdit_2.raise_()
+        self.label_4.raise_()
+        self.lineEdit_3.raise_()
+        self.pushButton.raise_()
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        self.retranslateUi(MainWindow)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.pushButton.clicked.connect(self.connect_1)
+
+        self.lineEdit.textEdited.connect(self.line_edid)
+        self.lineEdit_2.textEdited.connect(self.line_edid_2)
+        self.lineEdit_3.textEdited.connect(self.line_edid_3)
+
+
+
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.label.setText(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; font-size:8pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:14pt; color:#ffffff;\">Вход в игру</span></p></body></html>"))
+        self.label_2.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; color:#ffffff;\">IP-адрес</span></p></body></html>"))
+        self.label_3.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; color:#ffffff;\">Никнейм</span></p></body></html>"))
+        self.label_4.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt; color:#ffffff;\">Пароль</span></p></body></html>"))
+        self.pushButton.setToolTip(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:14pt;\">Войти</span></p></body></html>"))
+        self.pushButton.setText(_translate("MainWindow", "Войти"))
+        #self.pushButton.clicked.connect(self.connect_1)
+
+    # def connect_1(self):
+    #     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    #     sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+    #     print(sock)
+    #     empty = self.empty_check()
+    #     print(empty)
+    #     if not all(empty):
+    #         print("Поля пустые!")
+    #         return
+    #     if not self.ip_check():
+    #         print("IP-адрес не верен!")
+    #         return
+    #     self.ip = ".".join(self.ip)
+    #     self.port = int(self.port)
+    #     print(self.ip, self.port)
+    #     try:
+    #         sock.connect((str(self.ip), self.port))
+    #         info = f"<{self.lineEdit_2},{self.lineEdit_3}>".encode()
+    #         sock.send(info)
+    #     except:
+    #         print("Не смог подключиться")
+    #         return
+    #
+    #     tick = 0
+    #     while True:
+    #         try:
+    #             data = sock.recv(1024).decode()
+    #             data = find(data)
+    #             print(data)
+    #             if data[0] == "0":
+    #                 return
+    #             elif data[0] == "-1":
+    #                 wrong = QMessageBox()
+    #                 wrong.setWindowTitle("Внимание!")
+    #                 wrong.setText("Неправильный пароль. Попробуйте ещё раз.")
+    #                 wrong.setIcon(QMessageBox.Icon.Warning)
+    #                 wrong.setWindowIcon(QtGui.QIcon('warn.png'))
+    #                 wrong.exec()
+    #                 return
+    #             else:
+    #                 return
+    #         except:
+    #             tick += 1
+    #             time.sleep(0.5)
+    #             if tick == 20:
+    #                 return
+
+    def connect_1(self):
+        print(1)
+        self.tetris = tetris.Tetris(self)
+        self.tetris.show()
+
+    def ip_check(self):
+        a = self.lineEdit
+        self.ip = a.split('.')
+        c = a.find(':')
+
+
+
+        self.port = int(a[c + 1:])
+
+
+        # 255.255.255.255.255:25555
+        self.ip[-1] = self.ip[-1][:self.ip[-1].find(':')]
+        print(self.ip, self.port)
+
+
+        if 1024 >= self.port or self.port >= 65535:
+            print('bdport')
+            return False
+
+
+        for i in self.ip:
+            if 0 > int(i) or int(i) > 255:
+                print('bdip')
+                return False
+        return True
+    def line_edid(self, text):
+        self.lineEdit = text
+        print(self.lineEdit)
+
+    def line_edid_2(self, text):
+        self.lineEdit_2 = text
+        print(self.lineEdit_2)
+
+    def line_edid_3(self, text):
+        self.lineEdit_3 = text
+        print(self.lineEdit_3)
+
+
+
+    def empty_check(self):
+        '''
+        try:
+            self.lineEdit_2 = self.lineEdit_2.text()
+            self.lineEdit_3 = self.lineEdit_3.text()
+        except:
+            self.lineEdit_2 = ""
+            self.lineEdit_3 = ""
+            '''
+
+        result = [None, None]
+        if self.lineEdit_2 == "":
+            result[0] = False
+        else:
+            result[0] = True
+        if self.lineEdit_3 == "":
+            result[1] = False
+        else:
+            result[1] = True
+        return tuple(result)
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    MainWindow = QtWidgets.QMainWindow()
+    ui = Ui_MainWindow()
+    ui.setupUi(MainWindow)
+    MainWindow.show()
+    sys.exit(app.exec())
